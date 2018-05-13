@@ -42,7 +42,8 @@
       font-size: 14px;
       letter-spacing: 3px;
     }
-    footer{
+
+    footer {
       position: fixed;
       bottom: 0;
       right: 0;
@@ -59,9 +60,8 @@
       <a href="./lyric.html">完整琴谱</a>
     </div>
     <div class="content">
-      LONOL LONOL LONO OOMML
-      LONOL LQPPO LONOM MMOTS PPRRQQ QQNPOONO ONOR LSRQPPPRRQQ QQVUTUV VPOT TTSSSLSRQQRQ QRQ RQPOOQST TTSPPRQ
-      OQST TTSPPRQRQPO PQMMOONO
+      LONOL LONOL LONO OOMML LONOL LQPPO LONOM MMOTS PPRRQQ QQNPOONO ONOR LSRQP PPRRQQ QQVUTUV VPOT TTSSS LSRQ QRQ QRQ RQPO OQST
+      TTSPPRQ OQST TTSPPRQRQPO PQ M M O O N O
     </div>
   </div>
   <div class="audios_tools"></div>
@@ -84,13 +84,41 @@
       // 转为小写，转为 ascii码  
       // "".charCodeAt
       // 97 122
-      var asciiKey = e.key.toLowerCase().charCodeAt();
+      // var asciiKey = e.key.toLowerCase().charCodeAt();
+      var asciiKey;
+      if (e.key) {
+        asciiKey = e.key.toLowerCase().charCodeAt();
+      } else {
+        asciiKey = $(e.target).attr("data_index");
+      }
+
+      // 32 自动播放
+      if (asciiKey == 32) {
+        // console.log($.trim($(".content").html()));
+        var content = $.trim($(".content").html());
+        let tmpIndex = 0;
+        var timeId = setInterval(function () {
+          tmpLetterIndex = content[tmpIndex].charCodeAt();
+          if (tmpLetterIndex != 32) {
+            // createAudio(`musics/paino${tmpLetterIndex-64}.mp3`);
+            $("li[data_index='" + tmpLetterIndex + "']").click();
+          }
+          tmpIndex++;
+          if (tmpIndex == content.length) {
+            clearInterval(timeId)
+            return;
+          }
+        }, 700);
+
+        return
+      }
+
+
       if (asciiKey < 97 || asciiKey > 122) {
         return;
       }
       let index = asciiKey - 96;
       createAudio(`musics/paino${index}.mp3`);
-
     }
 
     $(".keyboard").on("click", "li", function (e) {
