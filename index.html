@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    .keyboard {
+      margin: 100px auto;
+      width: 80%;
+    }
+
+    .keyboard>span {
+      display: inline-block;
+      width: 50px;
+      height: 50px;
+      border: 1px solid #000;
+      text-align: center;
+      line-height: 50px;
+    }
+
+    body {
+      background-color: #000;
+    }
+
+    canvas {
+      display: block;
+      margin: 10px auto;
+    }
+
+    .words {
+      color: #7f8483;
+      width: 300px;
+      height: 200px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      overflow: scroll;
+      background-color: #0d0d0d;
+      font-size: 14px;
+      letter-spacing: 3px;
+    }
+    footer{
+      position: fixed;
+      bottom: 0;
+      right: 0;
+      color: #ccc;
+    }
+  </style>
+</head>
+
+<body>
+  <canvas width="900" height="200"></canvas>
+  <div class="words">
+    <div class="title">
+      《童话》
+      <a href="./lyric.html">完成琴铺</a>
+    </div>
+    <div class="content">
+      LONOL LONOL LONO OOMML
+      LONOL LQPPO LONOM MMOTS PPRRQQ QQNPOONO ONOR LSRQPPPRRQQ QQVUTUV VPOT TTSSSLSRQQRQ QRQ RQPOOQST TTSPPRQ
+      OQST TTSPPRQRQPO PQMMOONO
+    </div>
+  </div>
+  <div class="audios_tools"></div>
+  <div class="keyboard">
+  </div>
+  <footer>by-不懂先生 yeah126139163@163.com</footer>
+  <script src="./js/jq10.js"></script>
+  <script src="./js/keyboard.min.js"></script>
+  <script src="./js/canvas.js"></script>
+  <script>
+    // 获取焦点
+    $('textarea').focus();
+    $('.keyboard').keyboard({});
+    let audios_tools = document.querySelector(".audios_tools");
+    var pw = new ParticleWave("canvas");
+    pw.run();
+
+    let audios = document.querySelectorAll("audio");
+    document.body.onkeypress = function (e) {
+      // 转为小写，转为 ascii码  
+      // "".charCodeAt
+      // 97 122
+      var asciiKey = e.key.toLowerCase().charCodeAt();
+      if (asciiKey < 97 || asciiKey > 122) {
+        return;
+      }
+      let index = asciiKey - 96;
+      createAudio(`musics/paino${index}.mp3`);
+
+    }
+
+    $(".keyboard").on("click", "li", function (e) {
+      let index = $(e.target).attr("data_index");
+
+      if (index < 65 || index > 90) {
+        return;
+      }
+      index = index - 64;
+      createAudio(`musics/paino${index}.mp3`);
+    })
+
+    // 动态创建audio
+    function createAudio(src) {
+      // audios_tools
+      let audio = document.createElement("audio");
+      audio.autoplay = true;
+      audio.src = src;
+
+      // audio
+      audios_tools.appendChild(audio);
+      audio.onended = function () {
+        audios_tools.removeChild(audio);
+      }
+    }
+  </script>
+</body>
+
+</html>
