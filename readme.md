@@ -2,6 +2,10 @@
 typora-copy-images-to: medias
 ---
 
+
+
+[在线地址](https://itcastwsy.github.io/h5_piano/)
+
 # 说明
 
 ​	以前经常玩的一款游戏 **键盘音乐**  这款游戏是使用flash 实现的。
